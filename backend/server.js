@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8000;
 const userRoutes = require("./routes/auth");
+const roomRoutes = require("./routes/room");
 app.use(express.json());
 
 const mongoose = require("mongoose");
@@ -17,6 +18,7 @@ db.once("open", () => {
 });
 
 app.use("/api", userRoutes);
+app.use("/api", roomRoutes);
 app.listen(port, () => {
   console.log("listening on port ", port);
 });

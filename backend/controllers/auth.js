@@ -51,7 +51,6 @@ exports.signin = (req, res) => {
         message: "No user found",
       });
     } else {
-        
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
         if (err) {
           console.log("error", err);
@@ -59,7 +58,9 @@ exports.signin = (req, res) => {
             error: err,
           });
         }
-        if (res) {
+        if (result) {
+          const token = jwt.sign({ _id: user._id }, process.env.secret);
+          res.cookie("token", token, { expire: new Date() + 1000 });
           res.status(200).json(user);
         } else {
           res.status(200).json({

@@ -8,29 +8,29 @@ const roomSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    required: true,
+    // required: true,
   },
   rent: {
     type: Number,
-    required: true,
+    // required: true,
   },
   isRentedTo: {
     type: ObjectId,
     ref: "Customer",
   },
-  Images: {},
+  // Images: {},
   timePeriod: {
     type: Number,
   },
   Description: {
     type: String,
-    required: true,
+    // required: true,
   },
   openForRent: {
     type: Boolean,
-    required: true,
+    // required: true,
   },
-  path: {
+  images: {
     type: String,
   },
 });

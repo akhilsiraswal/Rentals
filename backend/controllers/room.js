@@ -2,7 +2,22 @@ const User = require("../models/user");
 // const formidable = require("formidable");
 const Room = require("../models/room");
 
+exports.getRoomById = (req, res, next, id) => {
+  Room.findById(id)
+    .exec((err, room) => {
+      if (err) {
+        res.status(500).json({
+          error: err,
+        });
+      }
+      req.room = room;
+      next();
+    })
+    .catch((err) => console.log(err));
+};
+
 exports.createRoom = (req, res) => {
+  console.log("create Room");
   const room = new Room({
     landlordId: req.profile._id,
     rent: req.body.rent,
@@ -11,14 +26,14 @@ exports.createRoom = (req, res) => {
   });
 
   if (req.file) {
-    room.image = req.file.path;
+    room.images = req.file.path;
   }
 
   room
     .save()
     .then((err, room) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           error: err,
         });
       }
@@ -28,6 +43,7 @@ exports.createRoom = (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       console.log("error occured /controllers/room.js/createRoom");
     });
 };
@@ -35,7 +51,7 @@ exports.createRoom = (req, res) => {
 exports.updateRoom = (req, res) => {
   let room = req.room;
 
-  room.path = req.file.path;
+  if (req.file) room.path = req.file.path;
 
   room
     .save()

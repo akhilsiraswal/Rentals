@@ -1,21 +1,21 @@
 const multer = require("multer");
 const path = require("path");
 
+console.log("inside multer");
+
 var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/rooms/images");
+  destination: function (req, file, cb) {
+    cb(null, "public/");
   },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.filename + "-" + Date.now() + path.extname(file.originalname)
-    );
+  filename: function (req, file, cb) {
+    let ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
   },
 });
 
 var upload = multer({
   storage: storage,
-  fileFilter: (req, file, callback) => {
+  fileFilter: function (req, file, callback) {
     if (file.mimetype == "image/jpg" || file.mimetype == "image/png") {
       callback(null, true);
     } else {
@@ -28,6 +28,6 @@ var upload = multer({
   },
 });
 
-var multipleFile = upload.files([{ name: "files", maxCount: 10 }]);
+// var multipleFile = upload.files([{ name: "files", maxCount: 10 }]);
 
 module.exports = upload;
